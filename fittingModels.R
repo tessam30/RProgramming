@@ -79,6 +79,36 @@ acsX <- build.x(Income ~ NumBedrooms + NumRooms + NumPeople +
                   HeatingFuel + Insurance + Language -1 ,
                 data = acs, contrasts = FALSE)
 
+class(acsX)
+dim(acsX)
+topleft(acsX, c = 6)
+
+acsY <- build.y(Income ~ NumBedrooms + NumRooms + NumPeople +
+                  NumRooms + NumUnits + NumVehicles + NumWorkers +
+                  OwnRent  + YearBuilt + ElectricBill + FoodStamp +
+                  HeatingFuel + Insurance + Language -1 ,
+                data = acs)
+
+class(acsY)
+
+
+set.seed(1863561)
+acsCV1 <- cv.glmnet(x = acsX, y = acsY, family = "binomial", nfold = 5)
+acsCV1$lambda.min
+acsCV1$lambda.1se
+
+# Plot the data
+plot(acsCV1)
+coef(acsCV1, s="lambda.1se")
+plot(acsCV1$glmnet.fit, xvar = "lambda")
+
+# Look at alpha = controls lasso or ridge (alpha = 1, alpha 0 = ridge)
+
+acsCV2 <- cv.glmnet(x = acsX, y = acsY, family = "binomial", nfold = 5, alpha = 0)
+plot(acsCV2)
+coef(acsCV2, s="lambda.1se")
+plot(acsCV2$glmnet.fit, xvar = "lambda")
+
 
 
 
