@@ -17,7 +17,7 @@ setwd("~/Rwanda/GIS/Rasters")
   
 # Create a set of rasters
   rlist <- list.files(pattern="*.tif")
-  rlist2 <- rlist[c(FALSE, TRUE)]
+  rlist2 <- rlist[c(FALSE, TRUE)] # Grab every other value, odds are credible intervals.
   
   # Apply the raster function to each element in list
   rwa <- lapply(rlist, raster)
