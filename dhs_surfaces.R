@@ -17,7 +17,7 @@ setwd("~/Rwanda/GIS/Rasters")
   
 # Create a set of rasters
   rlist <- list.files(pattern="*.tif")
-  rlist2 <- rlist[c(FALSE, TRUE)] # Grab every other value, odds are credible intervals.
+  rlist2 <- rlist[c(FALSE, TRUE)]
   
   # Apply the raster function to each element in list
   rwa <- lapply(rlist, raster)
@@ -59,18 +59,19 @@ setwd("~/Rwanda/GIS/Rasters")
       
        ggplot(df, aes(y = lat, x = lon)) +
           geom_raster(aes_(fill = quote(z))) +
-          scale_fill_gradient(low = "#ffffb2", high = "#b10026")+
+          #scale_fill_gradient(low = "#ffffcc", high = "#800026")+
+         scale_fill_distiller(palette = "YlOrRd", direction = 1) +
          theme_light() + labs(title = rw_names$Indicator.1[y])
     }
   
-map_surface("lit_men")
+map_surface("stunted")
 
 # To do -- map values to a consistent range; make surfaces comparable
 
 # Using rasterVis to facet all plots -- requires a raster stack
   gplot(rwa_stack2 ) + geom_tile(aes(fill = value)) +
     facet_wrap(~ variable) +
-    scale_fill_gradient(low = "#ffffb2", high = "#b10026") +
+    scale_fill_distiller(palette = "YlOrRd", direction = 1) +
     coord_equal()
 
   # documentation https://artax.karlin.mff.cuni.cz/r-help/library/rasterVis/html/gplot-methods.html
